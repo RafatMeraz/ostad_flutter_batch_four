@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 
+/// Navigation - one page -> another page
+/// Navigator 1(Simple and Lengthy), 2 (complex)
+/// Routers Package -> Getx, GoRouter, Auto Route
+
+/// TODO : Stack, Queue, Navigator, Navigation
+
 void main() {
-  // give me some widget
   runApp(MyApp());
 }
 
-// Hot reload => ctl + s
-// Hot restart => ctl + shift + \
-
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
       home: HomeScreen(),
-      title: 'Ostad app',
     );
   }
 }
 
+/// Route
 class HomeScreen extends StatelessWidget {
-
-  List<String> students = [
-    'Rafat',
-    'Azim',
-    'Hakim',
-    'Jawad',
-    'Kanij',
-    'Riad',
-    'Jakir',
-    'rohan'
-  ];
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,53 +31,121 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Scrollbar(
-        thickness: 20,
-        radius: Radius.circular(10),
-        /*child: GridView.builder(
-          itemCount: 100,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Home',
+              style: TextStyle(fontSize: 24),
             ),
-          itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Text(index.toString()),
-                  Icon(Icons.adb_rounded),
-                ],
-              );
-          },
-        )*/
-        // child : ListView.builder
-        // child: ListView.separated(
-        //   itemCount: 100,
-        //   itemBuilder: (context, index) {
-        //     return ListTile(
-        //       title: Text('Item number $index'),
-        //     );
-        //   },
-        //   separatorBuilder: (context, index) {
-        //     return Column(
-        //       children: [
-        //         Text(index.toString()),
-        //         Divider(),
-        //       ],
-        //     );
-        //   },
-        // ),
-        child: ListView.separated(
-          itemCount: students.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () {
-                print('go to details screen');
+            ElevatedButton(
+              onPressed: () {
+                /// Navigation - Route home -> Route settings
+                /// Navigator
+                /// Navigator.typeOfNavigation(currentLocation, Destination);
+                /// Navigation - Push, Pop(Back), replace, replaceAll, removeUntil
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
               },
-              title: Text(students[index]),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider();
-          },
+              child: Text('Go to settings'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                /// Navigation - Route home -> Route settings
+                /// Navigator
+                /// Navigator.typeOfNavigation(currentLocation, Destination);
+                /// Navigation - Push, Pop(Back), replace, replaceAll, removeUntil
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrdersScreen(),
+                  ),
+                );
+              },
+              child: Text('Go to Orders'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Route
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Settings',
+              style: TextStyle(fontSize: 24),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (route) => false,
+                );
+              },
+              child: Text('Home'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Route
+class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Orders'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Orders',
+              style: TextStyle(fontSize: 24),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+              child: Text('Go to settings'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Back to home'),
+            )
+          ],
         ),
       ),
     );
