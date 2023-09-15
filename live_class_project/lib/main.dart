@@ -20,7 +20,17 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+
+  List<String> students = [
+    'Rafat',
+    'Azim',
+    'Hakim',
+    'Jawad',
+    'Kanij',
+    'Riad',
+    'Jakir',
+    'rohan'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,31 +41,51 @@ class HomeScreen extends StatelessWidget {
       body: Scrollbar(
         thickness: 20,
         radius: Radius.circular(10),
-        child: GridView(
+        /*child: GridView.builder(
+          itemCount: 100,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
-            children: [
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-            Icon(Icons.adb_rounded),
-          ],
-        )
+          itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Text(index.toString()),
+                  Icon(Icons.adb_rounded),
+                ],
+              );
+          },
+        )*/
+        // child : ListView.builder
+        // child: ListView.separated(
+        //   itemCount: 100,
+        //   itemBuilder: (context, index) {
+        //     return ListTile(
+        //       title: Text('Item number $index'),
+        //     );
+        //   },
+        //   separatorBuilder: (context, index) {
+        //     return Column(
+        //       children: [
+        //         Text(index.toString()),
+        //         Divider(),
+        //       ],
+        //     );
+        //   },
+        // ),
+        child: ListView.separated(
+          itemCount: students.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              onTap: () {
+                print('go to details screen');
+              },
+              title: Text(students[index]),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
+        ),
       ),
     );
   }
