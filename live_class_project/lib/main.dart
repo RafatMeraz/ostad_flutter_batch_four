@@ -69,6 +69,17 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text('Go to Orders'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                /// Navigation - Route home -> Route settings
+                /// Navigator
+                /// Navigator.typeOfNavigation(currentLocation, Destination);
+                /// Navigation - Push, Pop(Back), replace, replaceAll, removeUntil
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductListScreen()));
+              },
+              child: Text('Go to Product list'),
+            ),
           ],
         ),
       ),
@@ -151,3 +162,66 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 }
+
+class ProductListScreen extends StatelessWidget {
+  const ProductListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Product list'),
+      ),
+      body: ListView.builder(
+          itemCount: 20,
+          itemBuilder: (context, index) {
+            return ListTile(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProductDetailsScreen(productName: index.toString(),
+                  );
+                })).then((value) {
+                  print(value);
+                });
+              },
+              title: Text(index.toString()),
+              subtitle: Text('Product details $index'),
+            );
+          }),
+    );
+  }
+}
+
+class ProductDetailsScreen extends StatelessWidget {
+  final String productName; /// Mandatory/Required
+  final double? price; /// Optional
+  const ProductDetailsScreen({super.key, required this.productName, this.price});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Product Details'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text(productName, style: TextStyle(
+              fontSize: 24
+            ),),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, 'my-name-$productName');
+              },
+              child: Text('Back'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
