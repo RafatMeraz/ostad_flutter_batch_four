@@ -10,13 +10,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: CounterScreen(),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,74 +26,99 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Column(
-        children: [
-          Switch(value: true, onChanged: (bool value) {}),
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Alert'),
-                      content: Text('You are in danger'),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('Cancel')),
-                        TextButton(
-                            onPressed: () {
-                              // ACTION
-                            },
-                            child: Text('Okay')),
-                      ],
-                    );
-                  });
-            },
-            child: Text('Show dialog'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              showAboutDialog(
-                  context: context,
-                  applicationName: "PikaPie",
-                  applicationVersion: '1.0.4',
-                  children: [
-                    Text('This application is good for regular uses!')
-                  ]);
-            },
-            child: Text('show about'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-            showModalBottomSheet(
-              isDismissible: false,
-                backgroundColor: Colors.grey.shade100,
-                barrierColor: Colors.black45,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  )
-                ),
-                context: context, builder: (context) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text('This is bottom sheet'),
-                    )
-                  ],
-                ),
-              );
-            });
-          }, child: Text('show bottom sheet'),),
-        ],
+      body: Center(
+        child: Text(
+          counter.toString(),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          counter = counter + 1;
+          print(counter);
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
 }
+
+/// 1. Extends stateful widget
+/// 2. Create a State
+
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _CounterState();
+}
+
+/// state
+class _CounterState extends State<CounterScreen> {
+
+  int counter = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              counter.toString(),
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileScreen(userName: 'Rabbi'),
+                    ),
+                  );
+                }, child: Text('Profile'))
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          counter = counter + 1;
+          setState(() {});
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+
+// Widget class
+class ProfileScreen extends StatefulWidget {
+  final String userName;
+  const ProfileScreen({super.key, required this.userName});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+// state class -> widget class
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: Center(
+        child: Text(widget.userName),
+      ),
+    );
+  }
+}
+
