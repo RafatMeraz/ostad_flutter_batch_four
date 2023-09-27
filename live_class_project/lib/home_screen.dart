@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:sizer/sizer.dart';
 
 /// Stack, Positioned, Align
+/// responsive Layout builder: responsive_builder
+/// Device preview : device_preview
+/// Size (height, width) : Sizer
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,57 +16,17 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Center(
-        child: Stack(
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              color: Colors.pink,
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      color: Colors.green,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+      body: ResponsiveBuilder(
+        builder: (context, sizeInformation) {
+          return Center(
+            child: Text(
+              sizeInformation.deviceScreenType.toString(),
+              style: TextStyle(
+                fontSize: 15.sp
               ),
             ),
-            Positioned(
-              bottom: 15,
-              left: 10,
-              child: Container(
-                width: 30,
-                height: 30,
-                color: Colors.black54,
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                width: 20,
-                height: 20,
-                color: Colors.purple,
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
