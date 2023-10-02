@@ -1,83 +1,117 @@
 import 'package:flutter/material.dart';
 
-/// Constructor
-/// CreateState
-/// InitState
-
-/// DidChangeDependencies - dependency change
-/// build - setState
-/// didUpdateWidget - Parent er configuration change
-
-/// deactive
-/// dispose
+/// TODO : Add multiply(*), division(/) and modulus(%)
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _HomeScreenState();
-  }
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int count = 0;
+  final TextEditingController _fieldOneTEController = TextEditingController();
+  final TextEditingController _fieldTwoTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // 1
-  @override
-  void initState() {
-    print('init state');
-    /// Task when screen start
-    super.initState();
-  }
-
-  // 2
-  @override
-  void didChangeDependencies() {
-    print('Did change dependency');
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(covariant HomeScreen oldWidget) {
-    print('did update widget');
-    super.didUpdateWidget(oldWidget);
-  }
+  double result = 0;
 
   @override
   Widget build(BuildContext context) {
-    print('Build method');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Sum Calculator'),
       ),
-      body: Center(
-        child: Text('$count', style: const TextStyle(
-          fontSize: 32
-        ),),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          // count = count + 1;
-          count++;
-          setState(() {}); // rebuild
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _fieldOneTEController,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(
+                  hintText: 'Field 1'
+                ),
+                validator: (String? value) {
+                  if (value == null) {
+                    return 'Enter a value';
+                  }
+                  if (value.trim().isEmpty) {
+                    return 'Enter a number';
+                  }
+                  // if (value?.trim().isEmpty ?? true) {
+                  //   return 'Enter valid value';
+                  // }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _fieldTwoTEController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: 'Field 2'
+                ),
+                validator: (String? value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Enter valid value';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16,),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        double firstNumber = parseToDouble(_fieldOneTEController.text.trim());
+                        double secondNumber = parseToDouble(_fieldTwoTEController.text.trim());
+                        result = addition(firstNumber, secondNumber);
+                        setState(() {});
+                      }
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        double firstNumber = parseToDouble(_fieldOneTEController.text.trim());
+                        double secondNumber = parseToDouble(_fieldTwoTEController.text.trim());
+                        result = sub(firstNumber, secondNumber);
+                        setState(() {});
+                      }
+                    },
+                    icon: const Icon(Icons.remove),
+                    label: const Text('Sub'),
+                  ),
+                ],
+              ),
+              Text(
+                'Result is : $result',
+                style: const TextStyle(fontSize: 18),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  // 5
-  @override
-  void deactivate() {
-    print('deactived');
-    super.deactivate();
+  double parseToDouble(String text) {
+    return double.tryParse(text) ?? 0;
   }
 
-  // 6
-  @override
-  void dispose() {
-    print('dispose');
-    super.dispose();
+  double addition(double firstNum, double secondNum,) {
+    return firstNum + secondNum;
   }
+
+  double sub(double firstNum, double secondNum,) {
+    return firstNum - secondNum;
+  }
+
 }
