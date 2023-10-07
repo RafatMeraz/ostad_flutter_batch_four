@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:live_class_project/update_task_modal.dart';
+import 'package:live_class_project/add_new_task_modal.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,91 +10,78 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _amountOfGlassTEController = TextEditingController(text: '1');
-  List<WaterTrack> waterConsumeList = [];
-  int totalAmount = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Water tracker'),
+        title: const Text('Todos'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Total consume',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Text(
-                  '$totalAmount',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        width: 50,
-                        child: TextField(
-                          controller: _amountOfGlassTEController,
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                        ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        int amount = int.tryParse(_amountOfGlassTEController.text.trim()) ?? 1;
-                        totalAmount += amount;
-                        WaterTrack waterTrack = WaterTrack(DateTime.now(), amount);
-                        waterConsumeList.add(waterTrack);
-                        setState(() {});
-                      },
-                      child: const Text('Add'),
-                    ),
-                  ],
-                ),
-              ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return const AddNewTaskModal();
+            },
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: ListView.separated(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Actions'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.edit),
+                            title: const Text('Update'),
+                            onTap: () {
+                              Navigator.pop(context);
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return const UpdateTaskModal();
+                                  });
+                            },
+                          ),
+                          const Divider(
+                            height: 0,
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.delete_outline),
+                            title: const Text('Delete'),
+                            onTap: () {
+                              // TODO - delete the item from list
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
+            leading: CircleAvatar(
+              child: Text('${index + 1}'),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: waterConsumeList.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 4,
-                    child: ListTile(
-                      onLongPress: () {
-                        print('on long press');
-                        // TODO : Delete the item from list
-                        // TODO : totalAmount theke remove korte hobe
-                      },
-                      leading: CircleAvatar(
-                        child: Text('${index + 1}'),
-                      ),
-                      title: Text(DateFormat('HH:mm:ss  dd-MM-yyyy')
-                          .format(waterConsumeList[index].time)),
-                      trailing: Text(
-                        '${waterConsumeList[index].noOfGlass}',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
-                  );
-                }),
-          )
-        ],
+            title: const Text('I have to do my homework for school'),
+            subtitle: const Text('12-05-23'),
+            trailing: const Text('Pending'),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider(
+            height: 4,
+          );
+        },
       ),
     );
   }
-}
-
-class WaterTrack {
-  final DateTime time;
-  final int noOfGlass;
-
-  WaterTrack(this.time, this.noOfGlass);
 }
