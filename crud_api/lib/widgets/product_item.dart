@@ -1,8 +1,11 @@
 import 'package:crud_api/screens/add_new_product_screen.dart';
+import 'package:crud_api/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key});
+  const ProductItem({super.key, required this.product});
+
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -15,24 +18,18 @@ class ProductItem extends StatelessWidget {
             });
       },
       leading: Image.network(
-        'https://cdn.shopify.com/s/files/1/0059/0630/1017/t/5/assets/keychronv1custommechanicalkeyboard27-1657706139851.jpg?v=1657706183',
+        product.image,
         width: 80,
       ),
-      title: const Text('Product name'),
-      subtitle: const Column(
+      title: Text(product.productName),
+      subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text('Product code'),
-              SizedBox(width: 24,),
-              Text('Total price'),
-            ],
-          ),
-          Text('Product description'),
+          Text(product.productCode),
+          Text('Total price : ${product.totalPRice}'),
         ],
       ),
-      trailing: const Text('\$120'),
+      trailing: Text('\$${product.unitPRice}'),
     );
   }
 
