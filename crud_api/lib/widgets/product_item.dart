@@ -1,11 +1,13 @@
 import 'package:crud_api/screens/add_new_product_screen.dart';
-import 'package:crud_api/screens/product_list_screen.dart';
+import 'package:crud_api/screens/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key, required this.product});
+  const ProductItem(
+      {super.key, required this.product, required this.onPressDelete});
 
   final Product product;
+  final Function(String) onPressDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class ProductItem extends StatelessWidget {
         children: [
           Text(product.productCode),
           Text('Total price : ${product.totalPRice}'),
+          Text('Quantity : ${product.quantity}'),
         ],
       ),
       trailing: Text('\$${product.unitPRice}'),
@@ -47,7 +50,9 @@ class ProductItem extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddNewProductScreen(),
+                  builder: (context) => AddNewProductScreen(
+                    product: product,
+                  ),
                 ),
               );
             },
@@ -60,6 +65,7 @@ class ProductItem extends StatelessWidget {
             leading: const Icon(Icons.delete_outline),
             onTap: () {
               Navigator.pop(context);
+              onPressDelete(product.id);
             },
           ),
         ],
