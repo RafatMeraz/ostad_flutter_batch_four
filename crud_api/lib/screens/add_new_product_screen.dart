@@ -28,7 +28,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   Future<void> addNewProduct() async {
     addInProgress = true;
     setState(() {});
-    final Map<String, String> inputMap = {
+    final Map<String, String> inputMap = {  //>>> TextFormField theke ja value ashbe seta ekhane add kore debe.<<<<
       "Img": _imageTEController.text.trim(),
       "ProductCode": _productCodeTEController.text.trim(),
       "ProductName": _titleTEController.text.trim(),
@@ -37,30 +37,30 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       "UnitPrice": _priceTEController.text.trim(),
     };
 
-    print(inputMap);
+    print(inputMap); //>>> console e product catagory dekacce kina check korte hoba<<<<
 
     final Response response = await post(
         Uri.parse('https://crud.teamrabbil.com/api/v1/CreateProduct'),
         headers: {
-          'Content-Type' : 'application/json',
+          'Content-Type' : 'application/json', // >>> Postman e header e content-type ache seta ekhane likha dete hobe
         },
-        body: jsonEncode(inputMap)
+        body: jsonEncode(inputMap)   //>>> kono data send korte gele seta jsonEncode kore send korte hoba<<<
     );
     print(response.request?.url);
     print(response.statusCode);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200) {  //>>> successful request e status code 200 hoy seta jodi hoy tahola formfield er input data clear kore debe EB te press korar sathe sathei
       _priceTEController.clear();
       _titleTEController.clear();
       _imageTEController.clear();
       _quantityTEController.clear();
       _totalPriceTEController.clear();
       _productCodeTEController.clear();
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(  //>>> jokhn add success hobe tokhn snackbar show korbe.
         SnackBar(
           content: Text('Product has been added'),
         ),
       );
-    } else if (response.statusCode == 400) {
+    } else if (response.statusCode == 400) {  //>>> 400 is a bad request
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Product code should be unique'),
