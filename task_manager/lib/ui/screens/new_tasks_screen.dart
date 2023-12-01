@@ -64,13 +64,18 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final response = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const AddNewTaskScreen(),
             ),
           );
+
+          if (response != null && response == true) {
+            getNewTaskList();
+            getTaskCountSummaryList();
+          }
         },
         child: const Icon(Icons.add),
       ),
