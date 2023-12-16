@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:live_class_project/counter_state_controller.dart';
-import 'package:live_class_project/second_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,40 +9,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  CounterStateController counterStateController =
-      Get.find<CounterStateController>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text('Home'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GetBuilder<CounterStateController>(builder: (controller) {
-              return Text(
-                controller.count.toString(),
-                style: const TextStyle(
-                  fontSize: 24,
-                ),
-              );
-            }),
-            ElevatedButton(
-                onPressed: () {
-                  Get.to(const SecondScreen());
-                },
-                child: const Text('Go to second screen'))
-          ],
+      body: GoogleMap(
+        initialCameraPosition: const CameraPosition(
+          zoom: 19,
+            target: LatLng(23.792265005916146, 90.40561775869223),
+          bearing: 0,
+          tilt: 5
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          counterStateController.updateValue(3);
+        onTap: (LatLng position) {
+          print(position);
         },
-        child: const Icon(Icons.add),
+        onLongPress: (LatLng latLng) {
+          print('On long press at $latLng');
+        },
+        onCameraMove: (cameraPosition) {
+          print(cameraPosition);
+        },
+        zoomControlsEnabled: false,
+        zoomGesturesEnabled: false,
+        compassEnabled: false,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
       ),
     );
   }
