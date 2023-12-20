@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +10,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late GoogleMapController googleMapController;
+  Location location = Location();
+
+  Future<void> getCurrentLocation() async {
+    final LocationData locationData = await location.getLocation();
+    // googleMapController.moveCamera(
+    //   CameraUpdate.newCameraPosition(
+    //     CameraPosition(
+    //       target: LatLng(locationData.longitude!, locationData.longitude!),
+    //     ),
+    //   ),
+    // );
+
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: LatLng(locationData.longitude!, locationData.longitude!),
+      zoom: 17
+    ),));
+    if (mounted) {
+      setState(() {
+
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         onCameraMove: (cameraPosition) {
           print(cameraPosition);
+        },
+        onMapCreated: (GoogleMapController controller) {
+          googleMapController = controller;
+          getCurrentLocation();
         },
         zoomControlsEnabled: false,
         zoomGesturesEnabled: false,
