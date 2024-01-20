@@ -11,5 +11,6 @@ import 'package:flutter/material.dart';
 /// KISS - Keep It Simple, Stupid
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CraftyBay());
 }

@@ -7,4 +7,5 @@ class Urls {
       '$_baseUrl/VerifyLogin/$email/$otp';
 
   static String readProfile = '$_baseUrl/ReadProfile';
+  static String createProfile = '$_baseUrl/CreateProfile';
 }
