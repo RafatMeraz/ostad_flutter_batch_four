@@ -8,4 +8,6 @@ class Urls {
 
   static String readProfile = '$_baseUrl/ReadProfile';
   static String createProfile = '$_baseUrl/CreateProfile';
+  static String homeBanner = '$_baseUrl/ListProductSlider';
+  static String categoryList = '$_baseUrl/CategoryList';
 }

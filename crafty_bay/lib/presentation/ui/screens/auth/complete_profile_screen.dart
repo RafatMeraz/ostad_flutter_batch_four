@@ -1,3 +1,4 @@
+import 'package:crafty_bay/data/models/create_profile_params.dart';
 import 'package:crafty_bay/presentation/state_holders/complete_profile_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/verify_otp_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/main_bottom_nav_screen.dart';
@@ -139,17 +140,24 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              final createProfileParams = CreateProfileParams(
+                                firstName:
+                                _firstNameTEController.text.trim(),
+                                lastName:
+                                _lastNameTEController.text.trim(),
+                                mobile: _mobileTEController.text.trim(),
+                                city: _cityTEController.text.trim(),
+                                shippingAddress:
+                                _shippingAddressTEController.text
+                                    .trim(),
+                              );
                               final bool result =
                                   await completeProfileController
                                       .createProfileData(
-                                Get.find<VerifyOTPController>().token,
-                                _firstNameTEController.text.trim(),
-                                _lastNameTEController.text.trim(),
-                                _mobileTEController.text.trim(),
-                                _cityTEController.text.trim(),
-                                _shippingAddressTEController.text.trim(),
-                              );
-                              if (result) {
+                                    Get.find<VerifyOTPController>().token,
+                                    createProfileParams
+                                  );
+                            if (result) {
                                 Get.offAll(() => const MainBottomNavScreen());
                               } else {
                                   Get.showSnackbar(GetSnackBar(
