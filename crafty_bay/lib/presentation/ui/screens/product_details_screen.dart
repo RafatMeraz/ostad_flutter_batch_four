@@ -58,31 +58,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: GetBuilder<ProductDetailsController>(
         builder: (productDetailsController) {
-          return Visibility(
-            visible: productDetailsController.inProgress == false,
-            replacement: const CenterCircularProgressIndicator(),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ProductImageCarousel(
-                          urls: [
-                            productDetailsController.productDetails.img1 ?? '',
-                            productDetailsController.productDetails.img2 ?? '',
-                            productDetailsController.productDetails.img3 ?? '',
-                            productDetailsController.productDetails.img4 ?? '',
-                          ],
-                        ),
-                        productDetailsBody(productDetailsController.productDetails),
-                      ],
-                    ),
+          if (productDetailsController.inProgress) {
+            return const CenterCircularProgressIndicator();
+          }
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProductImageCarousel(
+                        urls: [
+                          productDetailsController.productDetails.img1 ?? '',
+                          productDetailsController.productDetails.img2 ?? '',
+                          productDetailsController.productDetails.img3 ?? '',
+                          productDetailsController.productDetails.img4 ?? '',
+                        ],
+                      ),
+                      productDetailsBody(productDetailsController.productDetails),
+                    ],
                   ),
                 ),
-                priceAndAddToCartSection
-              ],
-            ),
+              ),
+              priceAndAddToCartSection
+            ],
           );
         }
       ),

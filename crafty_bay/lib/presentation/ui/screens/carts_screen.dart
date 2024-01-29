@@ -1,6 +1,8 @@
+import 'package:crafty_bay/presentation/state_holders/cart_list_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/carts/cart_product_item.dart';
+import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,15 @@ class CartsScreen extends StatefulWidget {
 }
 
 class _CartsScreenState extends State<CartsScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<CartListController>().getCartList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -29,21 +40,28 @@ class _CartsScreenState extends State<CartsScreen> {
             icon: const Icon(Icons.arrow_back_ios),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return const CartProductItem();
-                },
-                separatorBuilder: (_, __) => const SizedBox(
-                  height: 8,
+        body: GetBuilder<CartListController>(
+          builder: (cartListController) {
+            if (cartListController.inProgress == true) {
+              return const CenterCircularProgressIndicator();
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: cartListController.cartListModel.cartItemList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return const CartProductItem();
+                    },
+                    separatorBuilder: (_, __) => const SizedBox(
+                      height: 8,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            totalPriceAndCheckOutSection
-          ],
+                totalPriceAndCheckOutSection
+              ],
+            );
+          }
         ),
       ),
     );
