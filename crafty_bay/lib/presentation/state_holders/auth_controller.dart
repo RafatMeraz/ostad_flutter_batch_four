@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crafty_bay/data/models/profile.dart';
+import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,8 +44,13 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> clearAuthData() async {
+  static Future<void> clearAuthData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
+    token = null;
+  }
+
+  static Future<void> goToLogin() async {
+    Get.to(() => const VerifyEmailScreen());
   }
 }

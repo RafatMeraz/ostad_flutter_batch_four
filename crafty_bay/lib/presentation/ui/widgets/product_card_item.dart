@@ -57,7 +57,7 @@ class ProductCardItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '\$${product.price ?? 0}',
+                          '৳${product.price ?? 0}',
                           style: const TextStyle(
                               fontSize: 12,
                               color: AppColors.primaryColor,

@@ -9,6 +9,7 @@ class CartItem {
   String? createdAt;
   String? updatedAt;
   ProductModel? product;
+  int quantity = 1;
 
   CartItem(
       {this.id,
