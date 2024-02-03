@@ -30,6 +30,7 @@ class CartListController extends GetxController {
     );
     if (response.isSuccess) {
       _cartListModel = CartListModel.fromJson(response.responseData);
+      _totalPrice.value = _calculateTotalPrice;
       isSuccess = true;
     } else {
       _errorMessage = response.errorMessage;

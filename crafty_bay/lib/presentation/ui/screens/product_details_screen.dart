@@ -270,11 +270,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_selectedColor != null && _selectedSize != null) {
-                        print(AuthController.token);
                         if (Get.find<AuthController>().isTokenNotNull) {
                         final stringColor = colorToString(_selectedColor!);
                         final response = await addToCartController.addToCart(
-                            widget.productId, stringColor, _selectedSize!);
+                            widget.productId,
+                            stringColor,
+                            _selectedSize!,
+                            noOfItems.value);
                         if (response) {
                           Get.showSnackbar(const GetSnackBar(
                             title: 'Success',

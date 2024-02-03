@@ -28,6 +28,7 @@ class CartItem {
     color = json['color'];
     size = json['size'];
     createdAt = json['created_at'];
+    quantity = int.tryParse(json['qty']) ?? 1;
     updatedAt = json['updated_at'];
     product =
     json['product'] != null ? ProductModel.fromJson(json['product']) : null;
